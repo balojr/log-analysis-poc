@@ -15,7 +15,7 @@ class TransactionStatusExtractor:
         {
             ("mpesa_c2b", "stk-push-service"): {
                 "rank": 1,
-                "regexp": "..."
+                "regex": "..."
             }
         }
         """
@@ -27,7 +27,7 @@ class TransactionStatusExtractor:
         for key, value in service_patterns.items():
             flow, service = key
             try:
-                self._compiled_patterns[key] = re.compile(value["regexp"])
+                self._compiled_patterns[key] = re.compile(value["regex"])
                 logger.debug(f"Compiled regex pattern for flow '{flow}', service '{service}'")
             except re.error as e:
                 logger.error(f"Failed to compile regex for flow '{flow}', service '{service}': {e}")

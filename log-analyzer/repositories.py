@@ -29,7 +29,7 @@ class FlowServiceRepository:
             for service, flow in rows:
                 results[(flow.name, service.name)] = {
                     "rank": service.rank,
-                    "regexp": service.regexp,
+                    "regex": service.regex,
                 }
 
             logger.info(f"Built {len(results)} compiled service pattern definitions")

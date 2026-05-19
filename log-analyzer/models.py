@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, DateTime, Integer, String, Text, UniqueConstraint
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -36,7 +36,7 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
     rank = Column(Integer, nullable=False)
-    regexp = Column(Text, nullable=False)
+    regex = Column(Text, nullable=False)
     flow_id = Column(Integer, nullable=False)
 
 
