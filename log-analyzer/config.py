@@ -5,7 +5,7 @@ class AppConfig:
     def __init__(self):
         self.db_url = os.getenv(
             "DATABASE_URL",
-            "postgresql+psycopg2://app:secret@localhost:5432/transaction_monitoring",
+            "mysql+pymysql://app:secret@localhost:3306/transaction_monitoring",
         )
         self.log_path_pattern = os.getenv(
             "LOG_PATH_PATTERN",

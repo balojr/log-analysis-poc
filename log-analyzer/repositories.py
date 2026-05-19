@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.dialects.mysql import insert
 
 from models import Flow, Service, TransactionStatus
 
@@ -73,15 +73,10 @@ class TransactionStatusRepository:
 
             logger.debug(f"Prepared {len(values)} rows for insert statement")
 
-            stmt = insert(TransactionStatus).values(values)
-            stmt = stmt.on_conflict_do_nothing(
-                index_elements=["transaction_id", "flow", "service"]
-            )
+            # MySQL uses INSERT IGNORE to skip duplicate rows
+            stmt = insert(TransactionStatus).prefix_with("IGNORE").values(values)
 
-            logger.debug(
-                "Executing insert with conflict handling on "
-                "(transaction_id, flow, service)"
-            )
+            logger.debug("Executing INSERT IGNORE for conflict handling on (transaction_id, flow, service)")
             result = session.execute(stmt)
 
             logger.debug("Committing transaction status bulk insert")
