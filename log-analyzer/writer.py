@@ -4,6 +4,7 @@ import time
 
 logger = logging.getLogger(__name__)
 
+
 class TransactionStatusBuffer:
     def __init__(self):
         self.items = []
@@ -18,7 +19,7 @@ class TransactionStatusBuffer:
             logger.debug(f"Added item to buffer. Buffer size: {len(self.items)}")
 
     def drain(self):
-         # Stage 3: Buffer drain
+        # Stage 3: Buffer drain
         with self.lock:
             data = list(self.items)
             self.items.clear()
@@ -62,7 +63,7 @@ class PeriodicDatabaseWriter:
                     self.repository.bulk_insert(items)
                     logger.info(f"Successfully inserted {len(items)} transaction status updates")
                 except Exception as e:
-                    logger.error(f"Failed to insert {len(items)} items into database: {e}")
-                    raise
+                    logger.error(f"Failed to insert {len(items)} items into database: {e}", exc_info=True)
+                    # Don't re-raise — log and continue so the thread stays alive
             else:
                 logger.debug(f"No items to flush in cycle #{flush_cycle}")
