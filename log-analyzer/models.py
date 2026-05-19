@@ -24,28 +24,24 @@ class ExtractedTransactionStatusUpdate:
 
 
 class Flow(Base):
-    __tablename__ = "flow"
+    __tablename__ = "tbl_transaction_flows"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False, unique=True)
 
-    services = relationship("Service", back_populates="flow")
-
 
 class Service(Base):
-    __tablename__ = "service"
+    __tablename__ = "tbl_transaction_services"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
     rank = Column(Integer, nullable=False)
     regexp = Column(Text, nullable=False)
-    flow_id = Column(Integer, ForeignKey("flow.id"), nullable=False)
-
-    flow = relationship("Flow", back_populates="services")
+    flow_id = Column(Integer, nullable=False)
 
 
 class TransactionStatus(Base):
-    __tablename__ = "transaction_status"
+    __tablename__ = "tbl_transaction_status"
 
     __table_args__ = (
         UniqueConstraint(
