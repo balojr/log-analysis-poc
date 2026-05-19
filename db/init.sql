@@ -31,60 +31,59 @@ create index if not exists idx_transaction_status_created_on
 
 
 insert into tbl_transaction_flows (name)
-values ('mpesa_c2b')
-on conflict (name) do nothing;
+values ('mpesa_c2b');
 
-insert into tbl_transaction_services (name, rank, regexp, flow_id)
+insert into tbl_transaction_services (name, rank, regex, flow_id)
 select
     'stk-push-service',
     1,
     '"flow":"(?P<flow>[^"]+)".*?"service":"(?P<service>[^"]+)".*?"transaction_id":"(?P<transactionId>[^"]+)".*?"status":"(?P<status>[^"]+)".*?"message":"(?P<statusReason>[^"]+)"',
     id
-from flow
+from tbl_transaction_flows flow
 where name = 'mpesa_c2b'
-and not exists (
+  and not exists (
     select 1 from tbl_transaction_services s
     where s.name = 'stk-push-service'
       and s.flow_id = flow.id
 );
 
-insert into tbl_transaction_services (name, rank, regexp, flow_id)
+insert into tbl_transaction_services (name, rank, regex, flow_id)
 select
     'mpesa-callback-service',
     2,
     '"flow":"(?P<flow>[^"]+)".*?"service":"(?P<service>[^"]+)".*?"transaction_id":"(?P<transactionId>[^"]+)".*?"status":"(?P<status>[^"]+)".*?"status_reason":"(?P<statusReason>[^"]+)"',
     id
-from flow
+from tbl_transaction_flows flow
 where name = 'mpesa_c2b'
-and not exists (
+  and not exists (
     select 1 from tbl_transaction_services s
     where s.name = 'mpesa-callback-service'
       and s.flow_id = flow.id
 );
 
-insert into tbl_transaction_services (name, rank, regexp, flow_id)
+insert into tbl_transaction_services (name, rank, regex, flow_id)
 select
     'credit-account-service',
     3,
     '"flow":"(?P<flow>[^"]+)".*?"service":"(?P<service>[^"]+)".*?"transaction_id":"(?P<transactionId>[^"]+)".*?"status":"(?P<status>[^"]+)".*?"status_reason":"(?P<statusReason>[^"]+)"',
     id
-from flow
+from tbl_transaction_flows flow
 where name = 'mpesa_c2b'
-and not exists (
+  and not exists (
     select 1 from tbl_transaction_services s
     where s.name = 'credit-account-service'
       and s.flow_id = flow.id
 );
 
-insert into tbl_transaction_services (name, rank, regexp, flow_id)
+insert into tbl_transaction_services (name, rank, regex, flow_id)
 select
     'notification-service',
     4,
     '"flow":"(?P<flow>[^"]+)".*?"service":"(?P<service>[^"]+)".*?"transaction_id":"(?P<transactionId>[^"]+)".*?"status":"(?P<status>[^"]+)".*?"message":"(?P<statusReason>[^"]+)"',
     id
-from flow
+from tbl_transaction_flows flow
 where name = 'mpesa_c2b'
-and not exists (
+  and not exists (
     select 1 from tbl_transaction_services s
     where s.name = 'notification-service'
       and s.flow_id = flow.id
