@@ -43,7 +43,7 @@ services:
       sh -c "pip install --disable-pip-version-check --no-cache-dir -q -r requirements.txt &&
       python app.py"
     environment:
-      DATABASE_URL: mysql+pymysql://root:!QAZ2wsx@51.158.118.41:32592/mulika-customer-profiling?charset=utf8mb4
+      DATABASE_URL: mysql+pymysql://app:secret@localhost:3306/transaction_monitoring
       LOG_PATH_PATTERN: /app/log-server-storage/mpesac2btransactions*
       READER_POLL_INTERVAL_SECONDS: "2"
       WRITER_FLUSH_INTERVAL_SECONDS: "10"
